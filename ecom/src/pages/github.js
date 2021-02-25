@@ -1,33 +1,31 @@
 import React from "react"
-import axios from 'axios'
+// import axios from 'axios'
+import { connect } from 'react-redux'
 import BreadCrumb from "../components/breadcrumb"
-
+import{ GitHubRepo} from "../actions/index"
+import {gitHubReducer} from '../reducers'
 
 class GitHub extends React.Component{
     state={
-        repo:[],
+        
         breads: [
             { name: 'Home', link: '/home', active: false },
-            { name: 'GitHub Repository', link: '/github', active: true }
+            { name: 'Repository', link: '/github', active: true }
           ],
     }
-
-    async componentDidMount(){
-
-       const data = axios.get('https://api.github.com/orgs/octo-org/repos',{
-        
-        })
-        .then(res=>{
-            console.log(res.data)
-            this.setState({repo:res.data})
-        })   
-        console.log(data)
-        // const url ="https://api.github.com/search/repositories?q=stars:>1000";
-        // const response = await fetch(url)
-        //  const data = await response.json();
-        //  console.log(data)
-         
-    }
+        componentDidMount = () => {
+        this.props.GitHubRepo()
+      } 
+    //  componentDidMount=()=>{
+    //     this.props.GitHubRepo()
+    //    const data = axios.get('https://api.github.com/orgs/octo-org/repos',{
+    //     })
+    //     .then(res=>{
+    //         console.log(res.data)
+    //         this.setState({repo:res.data})
+    //     })   
+    //     console.log(data)  onClick={() => this.props.history.push(`/home`)}       
+    // }
     render(){
         return(
             <div>
@@ -36,19 +34,17 @@ class GitHub extends React.Component{
                 <div className="d-flex flex-row py-3 mb-4 justify-content-between">
                     <div className="">
                     <h2 className="page-title mb-3 mb-sm-0 h4">My GitHub</h2>
-                    <p>Created 8 years ago • Report abuse</p>
                     </div>
                 </div>
-             
-            
             <div className="container m-5">
              <table class="table table-hover">
              <tbody>
                 {
                     this.state.repo.map((i)=>{
                         console.log(i.full_name)
+                        console.log("hello")
                         return(
-                                <tr onClick={() => this.props.history.push(`/signup`)}>
+                                <tr>
                                 <td>{i.name}</td>
                                 </tr>
                         )    
@@ -64,4 +60,8 @@ class GitHub extends React.Component{
     }
 }
 
-export default GitHub;
+const mapStateToProps = (state) => ({
+    repo:state.gitHubReducer.repo, 
+  })
+  
+  export default connect(mapStateToProps,{GitHubRepo})(GitHub)
