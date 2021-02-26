@@ -2,14 +2,14 @@
 const INITIAL_STATE={
     repoList:[]
 }
-
-
-export default(state=[],action)=>{
+const repoReducer=(state=INITIAL_STATE,action)=>{
     switch(action.type){
-        case 'FETCH_REPO':
-        return action.payload
+            case 'FETCH_REPO' :
+                return {
+                  ...state, repoList:action.payload}
         default:
         return state
     }
     
 }
+export default repoReducer;
